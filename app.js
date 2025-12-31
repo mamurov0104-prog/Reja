@@ -2,12 +2,12 @@
 
 
 
-console.log('Projectning boshlanish nuqtasi ........,,,,,,,,,,.');
+console.log("Projectning boshlanish nuqtasi ........,,,,,,,,,,.");
 
 
 
 
-const console = require("console");
+// const console = require("console");
 const express = require("express"); 
 const app = express();
 const http = require("http"); 
