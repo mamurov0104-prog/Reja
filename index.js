@@ -1,76 +1,141 @@
-// callback function ======>>>>>
 
-// ----- settimeout orqali kod bloklash -----------
-
-// hello1();
-// goodBye1();
-// function hello1(){
-//     setTimeout(() => {
-//     console.log('Hello');
-        
-//     }, 3000);
-// }
-// function goodBye1(){
-//     console.log('Goodbye ');
-// }
+// ------------------------------------  17 dars ---------------------
 
 
-/*
-bu yerda biz hello() functionni birinchi 
-chaqirsak ham u avvalk 3 sek kutib keyin ishlaydi!
-*/
+// /*
+// Terminalga yozuv chiqaradi
+//  Bu qator Node ishlayaptimi yoki yo‘qmi tekshirish uchun
+//  Agar bu chiqsa – demak server.js o‘qilgan
+// */
 
-hello2(goodBye2); // pass a function as a argument 
-
-function hello2(callback){
-  console.log('Hello 2');
-    callback();
-}
-function goodBye2(){
-    console.log('Goodbye 2');
-}
-
-
-
-// ------------------- 2 ----------------
-sum(displayConsole,11,22 )
-function sum(callback,x,y){
-let result = x+y;
-callback(result)
-}
-function displayConsole(result){
-    console.log('Displayda korniadigan natija :' , result);
-}
+// console.log('Projectning boshlanish nuqtasi ........,,,,,,,,,,.');
 
 
 
 
-// -----------  MIT HOMEWORK --------------
+// const express = require("express"); // dan Express framework’ni yuklaydi
+// const app = express();
+// const http = require("http"); // Server yaratish uchun ishlatiladi ,  Express ichida ham HTTP bor, lekin biz o‘zimiz server yaratmoqdamiz
 
-console.log (" Kimnidir maslahatlari");
-const list = [
-     "Yaxshi talaba boling ",
-     " Togri bsohliq tanlang va xato qilishdan qorqmang",
-     "oz ustingizda ishlashni boshlang",
-     "qolingizdan kelgan eng yaxshi ishlarni qiling ",
-     "Farzandlaringni ta'limi uchun pul ayamang",
-     "Endi dam oling va bad steriotip odat kami umr boyi sizning boyningizga ilinganqarz ya'ni namozni ado eting"
-];
+// // ---------------  1 kirish  --------------
 
-function maslahatBering(a,callback){
-    if(typeof a !== "number")callback("Insert a number", null);
-    else if (a<=20)callback(null,list[0]);
-    else if (a>20 && a <=30)callback(null,list[1]);
-    else if (a>30 && a <=40)callback(null,list[2]);
-    else if (a>40 && a <=50)callback(null,list[3]);
-    else if (a>50 && a <=60)callback(null,list[4]);
-    else{
-        callback(null,list[5]);
-    };
+// app.use(express.static("public")); // public papkani ochiq qiladi
+// app.use(express.json());
+// // bizga kelgan data ni object korinishiga ogirib beradi
+// app.use(express.urlencoded({extended:true})); // HTML form’dan kelgan ma’lumotni o‘qiydi
+// // ---------------  2  --------------
+
+//          // sessions
+
+
+// // ---------------  3  --------------
+// //BSSR-
+// // viewlar joylashadigan joy
+
+// app.set("views","views"); // “HTML (EJS) fayllar shu papkada”
+// app.set("view engine","ejs") // Express EJS ishlatishini bildiradi
+ 
+// // ---------------  4  --------------
+// // Router qism
+// // Route (yo‘l) yaratish
+// /*
+// req → kelgan so‘rov
+// res → qaytariladigan javob
+// */
+// app.get("/sall" , function(req , res){
+//     res.end("Hello worldlkdkdk");
+//     // res.render("sljgsjglsj")
+// });
+// app.get("/ssal" , function(req , res){
+//     res.end("kdvjnxvkxvnxkjvnkxnvdk");
+//     // res.render("sljgsjglsj")
+// });
+
+// const server = http.createServer(app);
+// /*
+// Node’ning HTTP serveri
+// Express (app) request handler bo‘lib ishlaydi
+// */
+// let PORT = 3000;/* Server shu portni eshitadi, 3000 — development uchun standart */
+// server.listen(PORT,function(){
+// console.log(`THE SERVER IS RUNNING SUCCESSFULLY ON PORT:${PORT}`)
+// });
+
+// /* umimiy ish jarayoni :
+// Browser → Request → Express → Middleware → Route → Response
+
+// | Qism                | Vazifasi        |
+// | ------------------- | --------------- |
+// | `express()`         | App yaratadi    |
+// | `app.use()`         | Middleware      | Middleware — bu so‘rov (req) kelib, javob (res) ketguncha yo‘lda turadigan oraliq funksiyalar.
+// | `static()`          | CSS/JS          |
+// | `json()`            | API body        |
+// | `urlencoded()`      | Form            |
+// | `views`             | HTML joyi       |
+// | `view engine`       | Template        |
+// | `http.createServer` | Server          |
+// | `listen()`          | Ishga tushirish |
+
+
+// */
+
+
+
+
+// --------------------------------------  18-dars -------------------------------
+
+
+
+
+
+console.log('Projectning boshlanish nuqtasi ........,,,,,,,,,,.');
+
+
+
+
+const express = require("express"); 
+const app = express();
+const http = require("http"); 
+
+
+app.use(express.static("public")); 
+app.use(express.json());
+
+app.use(express.urlencoded({extended:true})); 
+
+
+app.set("views","views"); 
+app.set("view engine","ejs") 
+ 
+
+// app.post("/create-item",(req ,res) => {
+// console.log(req.body);
+// res.json({test:"success"});
+// });
+// POST- MALUMOTNI OZI BN OLIB KELADI
+
+
+app.post("/create-item", (req, res) => {
     
 
-};
-   maslahatBering(21,(err,data)=>{
-if(err) console.log("Error",err);
-console.log("Javob:",data);
-   });
+     console.log(req.body);        
+     
+     console.log(req.body.item);   
+     res.json({test:"Muvaffaqiyatli "});
+     
+});
+
+
+
+app.get("/" , function(req , res){
+    res.render("reja");
+    
+});
+
+const server = http.createServer(app);
+
+
+let PORT = 3000;
+server.listen(PORT,function(){
+console.log(`THE SERVER IS RUNNING SUCCESSFULLY ON PORT:${PORT}`)
+});
