@@ -4,10 +4,11 @@ const mongodb = require("mongodb");
 let db;
 
 // const connectionString = "mongodb+srv://mamurov0104_db_user:YbFdFnRkWAC0UAQm@cluster0.qpjarec.mongodb.net/?appName=Cluster0";
-// mongodb+srv://mamurov0104_db_user:YbFdFnRkWAC0UAQm@cluster0.qpjarec.mongodb.net/?appName=Cluster0
+// const connectionString = "mongodb+srv://mamurov0104_db_user:YbFdFnRkWAC0UAQm@cluster0.qpjarec.mongodb.net/?appName=Cluster0";
 //mongodb+srv://mamurov0104_db_user:YbFdFnRkWAC0UAQm@cluster0.qpjarec.mongodb.net/?appName=Cluster0
 //mongodb+srv://Akbar_db_user:HwuiydkLSPjYL0tb@cluster0.z2glep5.mongodb.net/
 const connectionString = "mongodb+srv://Akbar_db_user:HwuiydkLSPjYL0tb@cluster0.z2glep5.mongodb.net/"
+// link ka sorov boryabdi sababi emailga kelyabdi sorov keldi deb .
 mongodb.connect(
   connectionString,
   {
@@ -19,9 +20,9 @@ mongodb.connect(
       console.log("ERROR on connection MongoDB");
     } else {
     //   db = client.db("Reja");
-       console.log(client)
-        console.log('muvaffaqiyatli boldi shep !')
-        // module.exports=client;
+       console.log(client);
+        console.log("'muvaffaqiyatli boldi shep !'");
+        // module.exports=client; kommentdan chiqsa xato  beryabdi
       const app = require("./app");
       const server = http.createServer(app);
 

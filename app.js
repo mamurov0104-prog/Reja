@@ -13,7 +13,7 @@ const app = express();
 const http = require("http"); 
 
 // ---- MongoDb connection 
-// const db = require("./server").db(); commentdan chiqsa xato beryabdi
+// const db = require("./server").db(); //commentdan chiqsa xato beryabdi
 app.use(express.static("public")); 
 app.use(express.json());
 
