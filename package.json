@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon server.js",
     "async": "nodemon async.js",
     "train": "nodemon train.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,9 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.17.1",
-    "mongodb": "^3.2.6",
-    "nodemon": "^3.1.11"
+    "mongodb": "^7.0.0",
+    "nodemon": "^3.1.11",
+    "npm": "^11.7.0",
+    "start": "^5.1.0"
   }
 }

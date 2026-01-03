@@ -1,66 +1,101 @@
+console.log("Web Serverni Boshlash!");
+const express = require("express");
+const { getDb } = require("./db");
 
-
-
-
-console.log("Projectning boshlanish nuqtasi ........,,,,,,,,,,.");
-
-
-
-
-// const console = require("console");
-const express = require("express"); 
 const app = express();
-const http = require("http"); 
 
-// ---- MongoDb connection 
-// const db = require("./server").db(); //commentdan chiqsa xato beryabdi
-app.use(express.static("public")); 
+/* Middleware */
+app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.urlencoded({extended:true})); 
+/* Views */
+app.set("views", "views");
+app.set("view engine", "ejs");
 
-
-app.set("views","views"); 
-app.set("view engine","ejs") 
- 
-
-
-
+/* Routes */
 app.post("/create-item", (req, res) => {
-    
-    console.log("User entered / create-item")
+  const Db = getDb();
+  const new_reja = req.body.reja;
 
-     console.log(req.body);        
-     res.end("Access")
-     const new_reja = req.body.reja; 
-    db.collection("plans").insertOne({reja: new_reja}, (err,data) =>{
-        if(err){
-            console.log(err);
-            res.end('something went wrong');
-        } else{
-             res.end("chotki boldi hammasi !")
-        }
+  Db.collection("plans")
+    .insertOne({ reja: new_reja })
+    .then(() => res.redirect("/"))
+    .catch(err => {
+      console.log(err);
+      res.end("Xato");
     });
-    //  console.log(req.body.item);   
-     res.json({test:"Muvaffaqiyatli "});
-     
 });
 
+app.get("/", (req, res) => {
+  const Db = getDb();
 
-
-app.get("/" , function(req , res){
-    console.log("User entered /")
-    db.collection("plans").find().toArray((err,data) =>{
-        if(err){
-            console.log(err);
-        res.end(" Nimdaidr xato ")
-        } else{
-            console.log(data);
-            res.render("reja", {item:data});
-
-        }
+  Db.collection("plans")
+    .find()
+    .toArray()
+    .then(data => {
+      res.render("reja", { items: data });
     })
-    
+    .catch(err => {
+      console.log(err);
+      res.end("Xato");
+    });
 });
 
 module.exports = app;
+
+
+
+// console.log("Web Serverni Boshlash!");
+// const express = require("express");
+// const app = express();
+// // const { getDb } = require("./server"); 
+// const { getDb } = require("./server");
+
+
+// /* 1: Middleware */
+// app.use(express.static("public"));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// /* 3: Views */
+// app.set("views", "views");
+// app.set("view engine", "ejs");
+
+// /* 4: Routes */
+// app.post("/create-item", (req, res) => {
+//   const Db = getDb();
+//   console.log("user entered "+req.body);
+//   const new_reja = req.body.reja;
+//   Db.collection("plans").insertOne({reja: new_reja},(err,data)=>{
+//     if(err){
+//       console.log(err);
+//       res.end("nimadur xato");
+//     }
+//     else{
+//       console.log(data);
+//       res.end("succesfully added");
+//     }
+//   })
+//   // res.json({ test: "success" });
+//     // res.end("ulandi !")
+
+// });
+
+// app.get("/", (req, res) => {
+//    const Db = getDb();
+//   Db.collection("plans").find().toArray ((err,data) =>{
+//    if(err){
+//     console.log(err);
+//     res.end("something went wrong !")
+//    }
+//    else{
+//     console.log(data);
+//     console.log("chotki ulandi");
+//     res.render("reja",{items:data});
+
+//    }
+//   });
+// });
+
+// module.exports = app;
