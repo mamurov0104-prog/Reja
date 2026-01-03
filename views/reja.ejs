@@ -19,12 +19,12 @@
         <form id="create-form" action="/create-item" method="POST">
           <div class="d-flex align-items-center">
             <input
-              name="reja"
-              type="text"
-              class="form-control"
-              placeholder="Yangi reja kiriting..."
-              autocomplete="off"
-              required
+  id="create-field"
+  name="reja"
+  type="text"
+  class="form-control"
+  placeholder="Yangi reja kiriting..."
+  required
             />
 
             <button class="btn btn-primary ms-2">
@@ -74,5 +74,8 @@
         Hammasini o‘chirish
       </button>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="browser.js"></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 console.log("Web Serverni Boshlash!");
 const express = require("express");
 const { getDb } = require("./db");
-
+const mongodb = require("mongodb")
 const app = express();
 
 /* Middleware */
@@ -14,19 +14,64 @@ app.set("views", "views");
 app.set("view engine", "ejs");
 
 /* Routes */
+// app.post("/create-item", (req, res) => {
+//   const Db = getDb();
+//   const new_reja = req.body.reja;
+//   Db.collection("plans")
+//     .insertOne({ reja: new_reja })
+//     .then(() => res.redirect("/"))
+//     .catch(err => {
+//       console.log(err);
+//       res.end("Xato");
+//       console.log(data);
+//      res.json(data.ops[0]); // joyi
+
+//     });
+// });
+
+
 app.post("/create-item", (req, res) => {
   const Db = getDb();
   const new_reja = req.body.reja;
 
   Db.collection("plans")
     .insertOne({ reja: new_reja })
-    .then(() => res.redirect("/"))
+    .then(result => {
+      res.json({
+        _id: result.insertedId,
+        reja: new_reja
+      });
+    })
     .catch(err => {
       console.log(err);
-      res.end("Xato");
+      res.status(500).end("Xato");
     });
 });
 
+
+app.post("/delete-item", (req, res) => {
+  const Db = getDb();
+  const id = req.body.id;
+
+  Db.collection("plans")
+    .deleteOne({ _id: new mongodb.ObjectId(id) })
+    .then(() => {
+      res.json({ state: "success" });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ state: "error" });
+    });
+});
+
+// app.post("/delete-item",(req,res) =>{
+// const id = req.body.id;
+// Db.collection("plans").deleteOne({id:new mongodb.ObjectId(id)},function(err,data){
+//   res.json({state:"succes"});
+// })
+// // console.log(id);
+// // res.end("Done")
+// })
 app.get("/", (req, res) => {
   const Db = getDb();
 
