@@ -1,4 +1,3 @@
-
 /*
 Browser (reja.ejs + browser.js)
         ↓ axios
@@ -7,8 +6,6 @@ Express server (app.js)
 MongoDB (db.js)
 
 */
-
-
 
 console.log("Web Serverni Boshlash!");
 const express = require("express");
@@ -39,11 +36,15 @@ app.post("/create-item", (req, res) => { // Frontenddan POST keladi
   const new_reja = req.body.reja; // MongoDB instance + input qiymati
 
   Db.collection("plans")
-    .insertOne({ reja: new_reja }) // MongoDB ga saqlaydi
+    .insertOne({ 
+      reja: new_reja,
+      edited: false
+    }) // MongoDB ga saqlaydi
     .then(result => {
       res.json({
         _id: result.insertedId,
-        reja: new_reja
+        reja: new_reja,
+        edited: false
       }); // Frontendga yangi reja + ID qaytadi - Sahifaga darhol qo‘shiladi
     })
     .catch(err => {
@@ -67,14 +68,29 @@ app.post("/delete-item", (req, res) => {
       res.json({ state: "error" });
     });
 });
+
 // ------------------ edit me ------------------
+//Button → Prompt → Axios → Backend → MongoDB → DOM update
 app.post("/edit-item", (req, res) => {
   const Db = getDb(); // 
   const data = req.body;
+  /*
+  Bu frontend yuborgan JSON yani 1.req.body.id / 2.req.body.new_input
+  */
 
-  Db.collection("plans").findOneAndUpdate(
+  Db.collection("plans").findOneAndUpdate(  
+      /* tepadagi kod faqat bitta hujjat
+
+        faqat bitta field
+
+        qolgan ma’lumotlar buzilmaydi */
     { _id: new mongodb.ObjectId(data.id) },
-    { $set: { reja: data.new_input } }
+    { 
+      $set: { 
+        reja: data.new_input,
+        edited: true
+      } 
+    }
   )
   .then(() => {
     res.json({ state: "success" });
@@ -84,6 +100,15 @@ app.post("/edit-item", (req, res) => {
     res.status(500).json({ state: "error" });
   });
 });
+/*
+/edit-item	Edit uchun endpoint
+req.body.id	Qaysi reja
+$set	Faqat matnni o‘zgartir
+findOneAndUpdate	MongoDB update
+res.send	Frontendga javob
+*/
+
+
 // B aka kodi / then va catch orqali sodda va tushunishga osson 
 // app.post("/edit-item",(req,res)=>{
 //   const data = req.body;
@@ -103,22 +128,33 @@ app.post("/edit-item", (req, res) => {
 
 // ----------------------- edit -me finished -------------------
 // ----------------------- delete all started -----------------
-
+// Button → Axios → MongoDB deleteMany → DOM tozalash
 app.post("/delete-all", (req, res) => {
   const Db = getDb();
 
   if (req.body.delete_all) {
     Db.collection("plans").deleteMany({})
       .then(() => {
-        res.json({ state: "모든 항목이 삭제되었습니다" });
+        res.json({ state: "모든 항목이 삭제되었습니다" }); // frontend bilishi uchun/  foydalanuvchiga xabar chiqarish uchun
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({ state: "error" });
+        res.status(403).json({ state: "error" });
       });
   }
 });
-// B aka kodi / bu yerda ham then va catch orqali sodda va yaxshi .
+
+/*
+deleteMany({}) -	Hech qanday shart yo‘q
+{}	- demak hamma hujjatlar
+await	- DB tugaguncha kut
+res.send	- frontendga javob
+*/
+
+
+
+
+// B aka kodi / bu yerda yani yuqorida ham then va catch orqali sodda va yaxshi .
 // app.post("/delete-all",(req,res)=>{
 //   if(req.body.delete_all){
 //     Db.collection("plans").deleteMany(function(){
@@ -154,26 +190,3 @@ Rejalar ro‘yxati
 - Backenddan kelgan data
 */
 module.exports = app;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
