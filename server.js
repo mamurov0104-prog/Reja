@@ -8,7 +8,9 @@ async function startServer() {
 
     const server = http.createServer(app);
     const PORT = 3000;
-
+/*
+Express app’ni HTTP serverga o‘rayapmiz
+*/
     server.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
@@ -18,6 +20,13 @@ async function startServer() {
 }
 
 startServer();
+
+
+
+
+
+
+
 
 // const http = require("http");
 // const { MongoClient } = require("mongodb");
@@ -35,7 +44,7 @@ startServer();
 //     await client.connect();
 //     console.log("MongoDB connection succeeded");
 
-//     db = client.db("Reja"); // 🔴 DATABASE NOMI MUHIM
+//     db = client.db("Reja"); //  DATABASE NOMI MUHIM
 
 //     const server = http.createServer(app);
 //     const PORT = 3000;

@@ -1,9 +1,27 @@
+
+/*
+Browser (reja.ejs + browser.js)
+        ↓ axios
+Express server (app.js)
+        ↓
+MongoDB (db.js)
+
+*/
+
+
+
 console.log("Web Serverni Boshlash!");
 const express = require("express");
 const { getDb } = require("./db");
 const mongodb = require("mongodb")
 const app = express();
+/*
+http → Node.js server yaratish uchun
 
+app → Express app (route, middleware shu yerda)
+
+connectDB → MongoDB bilan ulanish
+*/
 /* Middleware */
 app.use(express.static("public"));
 app.use(express.json());
@@ -11,36 +29,22 @@ app.use(express.urlencoded({ extended: true }));
 
 /* Views */
 app.set("views", "views");
-app.set("view engine", "ejs");
-
-/* Routes */
-// app.post("/create-item", (req, res) => {
-//   const Db = getDb();
-//   const new_reja = req.body.reja;
-//   Db.collection("plans")
-//     .insertOne({ reja: new_reja })
-//     .then(() => res.redirect("/"))
-//     .catch(err => {
-//       console.log(err);
-//       res.end("Xato");
-//       console.log(data);
-//      res.json(data.ops[0]); // joyi
-
-//     });
-// });
+app.set("view engine", "ejs"); // views/reja.ejs render qilinadi
 
 
-app.post("/create-item", (req, res) => {
+
+
+app.post("/create-item", (req, res) => { // Frontenddan POST keladi
   const Db = getDb();
-  const new_reja = req.body.reja;
+  const new_reja = req.body.reja; // MongoDB instance + input qiymati
 
   Db.collection("plans")
-    .insertOne({ reja: new_reja })
+    .insertOne({ reja: new_reja }) // MongoDB ga saqlaydi
     .then(result => {
       res.json({
         _id: result.insertedId,
         reja: new_reja
-      });
+      }); // Frontendga yangi reja + ID qaytadi - Sahifaga darhol qo‘shiladi
     })
     .catch(err => {
       console.log(err);
@@ -51,35 +55,90 @@ app.post("/create-item", (req, res) => {
 
 app.post("/delete-item", (req, res) => {
   const Db = getDb();
-  const id = req.body.id;
+  const id = req.body.id;// Frontenddan kelgan ID
 
   Db.collection("plans")
-    .deleteOne({ _id: new mongodb.ObjectId(id) })
+    .deleteOne({ _id: new mongodb.ObjectId(id) }) //MongoDB _id → ObjectId bo‘lishi shart
     .then(() => {
-      res.json({ state: "success" });
+      res.json({ state: "success" }); // Frontendga javob
     })
     .catch(err => {
       console.log(err);
       res.json({ state: "error" });
     });
 });
+// ------------------ edit me ------------------
+app.post("/edit-item", (req, res) => {
+  const Db = getDb(); // 
+  const data = req.body;
 
-// app.post("/delete-item",(req,res) =>{
-// const id = req.body.id;
-// Db.collection("plans").deleteOne({id:new mongodb.ObjectId(id)},function(err,data){
-//   res.json({state:"succes"});
+  Db.collection("plans").findOneAndUpdate(
+    { _id: new mongodb.ObjectId(data.id) },
+    { $set: { reja: data.new_input } }
+  )
+  .then(() => {
+    res.json({ state: "success" });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({ state: "error" });
+  });
+});
+// B aka kodi / then va catch orqali sodda va tushunishga osson 
+// app.post("/edit-item",(req,res)=>{
+//   const data = req.body;
+//   console.log(data);
+//   Db.collection("plans").findOneAndUpdate(
+//     {_id:new mongodb.ObjectId(data.id)},
+//     {$set:{reja:data.new_input}},
+//   function(err,data){
+//     res.json({state:"Success"})
+//   }
+
+//   )
+// res.end("done!")
 // })
-// // console.log(id);
-// // res.end("Done")
-// })
-app.get("/", (req, res) => {
+
+
+
+// ----------------------- edit -me finished -------------------
+// ----------------------- delete all started -----------------
+
+app.post("/delete-all", (req, res) => {
   const Db = getDb();
 
-  Db.collection("plans")
+  if (req.body.delete_all) {
+    Db.collection("plans").deleteMany({})
+      .then(() => {
+        res.json({ state: "모든 항목이 삭제되었습니다" });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ state: "error" });
+      });
+  }
+});
+// B aka kodi / bu yerda ham then va catch orqali sodda va yaxshi .
+// app.post("/delete-all",(req,res)=>{
+//   if(req.body.delete_all){
+//     Db.collection("plans").deleteMany(function(){
+//       res.json({state:"All plans are deleted !"});
+//     });
+//   }
+// });
+
+
+
+
+// -------------------------- delete all finished ------------------------
+app.get("/", (req, res) => { // REJALARNI CHIQARISH (READ)
+  const Db = getDb();
+
+  Db.collection("plans") // - Barcha rejalarni oladi
     .find()
     .toArray()
     .then(data => {
-      res.render("reja", { items: data });
+      res.render("reja", { items: data }); //- EJS ga uzatadi
     })
     .catch(err => {
       console.log(err);
@@ -87,60 +146,34 @@ app.get("/", (req, res) => {
     });
 });
 
+/*
+Rejalar ro‘yxati
+<% items.forEach(function(item) { %>
+  <%= item.reja %>
+<% }) %>
+- Backenddan kelgan data
+*/
 module.exports = app;
 
 
 
-// console.log("Web Serverni Boshlash!");
-// const express = require("express");
-// const app = express();
-// // const { getDb } = require("./server"); 
-// const { getDb } = require("./server");
 
 
-// /* 1: Middleware */
-// app.use(express.static("public"));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
-// /* 3: Views */
-// app.set("views", "views");
-// app.set("view engine", "ejs");
 
-// /* 4: Routes */
-// app.post("/create-item", (req, res) => {
-//   const Db = getDb();
-//   console.log("user entered "+req.body);
-//   const new_reja = req.body.reja;
-//   Db.collection("plans").insertOne({reja: new_reja},(err,data)=>{
-//     if(err){
-//       console.log(err);
-//       res.end("nimadur xato");
-//     }
-//     else{
-//       console.log(data);
-//       res.end("succesfully added");
-//     }
-//   })
-//   // res.json({ test: "success" });
-//     // res.end("ulandi !")
 
-// });
 
-// app.get("/", (req, res) => {
-//    const Db = getDb();
-//   Db.collection("plans").find().toArray ((err,data) =>{
-//    if(err){
-//     console.log(err);
-//     res.end("something went wrong !")
-//    }
-//    else{
-//     console.log(data);
-//     console.log("chotki ulandi");
-//     res.render("reja",{items:data});
 
-//    }
-//   });
-// });
 
-// module.exports = app;
+
+
+
+
+
+
+
+
+
+
+
+
