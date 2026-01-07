@@ -7,7 +7,7 @@ async function startServer() {
     await connectDB();
 
     const server = http.createServer(app);
-    const PORT = 3000;
+    const PORT = 3010;
 /*
 Express app’ni HTTP serverga o‘rayapmiz
 */
