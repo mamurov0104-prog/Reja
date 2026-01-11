@@ -1,27 +1,45 @@
-// -------------------------  new task started --------------------------------------
 
-// getReverse nomli function e’lon qilinyapti
-function getReverse(str) {
+// -------------------------------------- / new started /  --------------------------------------------
 
-  // str ni harflarga ajratib ARRAY ga aylantiryapmiz
-  // "hello" → ["h", "e", "l", "l", "o"]
-  const arr = str.split("");
-
-  // array elementlarini TESKARI tartibga o‘tkazyapmiz
-  // ["h","e","l","l","o"] → ["o","l","l","e","h"]
-  arr.reverse();
-
-  // teskari bo‘lgan arrayni yana STRING ga yig‘yapmiz
-  // ["o","l","l","e","h"] → "olleh"
-  const result = arr.join("");
-
-  // yakuniy teskari stringni qaytaryapmiz
-  return result;
+function findDoublers(str) {
+    for (let i = 0; i < str.length; i++) {
+        // Agar shu harf yana boshqa joyda bo‘lsa
+        if (str.indexOf(str[i]) !== i) {
+            return true;
+        }
+    }
+    return false;
 }
 
-console.log(getReverse("Muhammadaliev")); 
+console.log(findDoublers("hello")); // true
+console.log(findDoublers("abc"));   // false
 
-console.log(getReverse("Mamurov")); 
+// -------------------------------------- / new finished /  --------------------------------------------
+
+// // -------------------------  new task started --------------------------------------
+
+// // getReverse nomli function e’lon qilinyapti
+// function getReverse(str) {
+
+//   // str ni harflarga ajratib ARRAY ga aylantiryapmiz
+//   // "hello" → ["h", "e", "l", "l", "o"]
+//   const arr = str.split("");
+
+//   // array elementlarini TESKARI tartibga o‘tkazyapmiz
+//   // ["h","e","l","l","o"] → ["o","l","l","e","h"]
+//   arr.reverse();
+
+//   // teskari bo‘lgan arrayni yana STRING ga yig‘yapmiz
+//   // ["o","l","l","e","h"] → "olleh"
+//   const result = arr.join("");
+
+//   // yakuniy teskari stringni qaytaryapmiz
+//   return result;
+// }
+
+// console.log(getReverse("Muhammadaliev")); 
+
+// console.log(getReverse("Mamurov")); 
 
 
 
@@ -88,37 +106,37 @@ console.log(getReverse("Mamurov"));
 
 console.log(getReverse("Nabiev")); 
 
-// -------------------------  2  ----------------------
+// // -------------------------  2  ----------------------
 
-// getReverse nomli function e’lon qilinyapti
-function getReverse(str) {
+// // getReverse nomli function e’lon qilinyapti
+// function getReverse(str) {
 
-  // bo‘sh string yaratib olyapmiz
-  // bunda teskari natijani yig‘amiz
-  let result = "";
+//   // bo‘sh string yaratib olyapmiz
+//   // bunda teskari natijani yig‘amiz
+//   let result = "";
 
-  // string uzunligining oxiridan boshlab aylanyapmiz
-  // i = oxirgi indeks
-  for (let i = str.length - 1; i >= 0; i--) {
+//   // string uzunligining oxiridan boshlab aylanyapmiz
+//   // i = oxirgi indeks
+//   for (let i = str.length - 1; i >= 0; i--) {
 
-    // har bir belgini result boshiga qo‘shyapmiz
-    // masalan: "o" + "" → "o"
-    // keyin: "l" + "o" → "lo"
-    result += str[i];
-  }
+//     // har bir belgini result boshiga qo‘shyapmiz
+//     // masalan: "o" + "" → "o"
+//     // keyin: "l" + "o" → "lo"
+//     result += str[i];
+//   }
 
-  // teskari bo‘lgan stringni qaytaryapmiz
-  return result;
-}
+//   // teskari bo‘lgan stringni qaytaryapmiz
+//   return result;
+// }
 
 
-console.log(getReverse("Bilol")); 
+// console.log(getReverse("Bilol")); 
 
-console.log(getReverse("Hojiakbar")); 
-console.log(getReverse("Nematillo")); 
+// console.log(getReverse("Hojiakbar")); 
+// console.log(getReverse("Nematillo")); 
 
-// ----------------------------  2 -----------------------
-// ------------------------ new task finished ------------------------
+// // ----------------------------  2 -----------------------
+// // ------------------------ new task finished ------------------------
 
 
 
