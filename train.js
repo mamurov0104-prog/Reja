@@ -11,7 +11,9 @@ function findDoublers(str) {
     return false;
 }
 
-console.log(findDoublers("hello")); // true
-console.log(findDoublers("abc"));   // false
-
+console.log(findDoublers("hello")); 
+console.log(findDoublers("abc"));   
+console.log(findDoublers("bilol"));
+console.log(findDoublers("+998911095081"));   
+console.log(findDoublers("good"));    
 // -------------------------------------- / new finished /  --------------------------------------------
